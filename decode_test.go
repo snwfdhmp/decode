@@ -86,7 +86,7 @@ func TestYAML(t *testing.T) {
 	}
 
 	var result ExampleType
-	if err := JSON(ExamplePathYAML, &result); err != nil {
+	if err := YAML(ExamplePathYAML, &result); err != nil {
 		t.Errorf("err: %s", err)
 		return
 	}

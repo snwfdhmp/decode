@@ -3,45 +3,40 @@ package decode
 
 import (
 	"encoding/json"
+
 	// "path/filepath"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 var (
 	fs = afero.NewOsFs()
 )
 
-//UnmarshalFunc is a type representing a typical Unmarshal func
-//(see package encoding/json for example)
+// UnmarshalFunc represents an function used for Unmarshal-ing bytes into a struct
+// Example: json.Unmarshal from package encoding/json
 type UnmarshalFunc func([]byte, interface{}) error
 
-//Parse parses file located at 'path', relative to current working directory
-//using the given UnmarshalFunc, into given recipient
+// Parse parses file located at 'path' using the given UnmarshalFunc, into given recipient
+// Any standard Marshal func of type :
+//     func (b []byte, data interface{}) error
+// can be used.
 func Parse(u UnmarshalFunc, path string, to interface{}) error {
-	logrus.Debugf("Parsing content of file %s as json", path)
-
-	// abs, err := filepath.Abs(path)
-	// if err != nil {
-	// 	return err
-	// }
-	content, err := afero.ReadFile(fs, path)
+	content, err := afero.ReadFile(fs, path) //read file
 	if err != nil {
 		return err
 	}
-	logrus.Debugf("content: '%s'", content)
 
 	return u(content, to)
 }
 
-//JSON runs Parse with encoding/json UnmarshalFunc
+//JSON calls Parse with encoding/json Unmarshal func
 func JSON(path string, to interface{}) error {
 	return Parse(json.Unmarshal, path, to)
 }
 
-//YAML runs Parse with gopkg.in/yaml.v2 UnmarshalFunc
+//YAML calls Parse with gopkg.in/yaml.v2 Unmarshal func
 func YAML(path string, to interface{}) error {
 	return Parse(yaml.Unmarshal, path, to)
 }
