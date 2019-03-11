@@ -49,6 +49,30 @@ func TestJSON(t *testing.T) {
 	}
 }
 
+//TestParse runs tests for Parse func
+func TestParse(t *testing.T) {
+	b, err := json.Marshal(ExampleData)
+	if err != nil {
+		t.Errorf("err: %s", err)
+		return
+	}
+	if err := afero.WriteFile(fs, ExamplePathJSON, b, 0755); err != nil {
+		t.Errorf("err: %s", err)
+		return
+	}
+
+	var result ExampleType
+	if err := Parse(json.Unmarshal, ExamplePathJSON, &result); err != nil {
+		t.Errorf("err: %s", err)
+		return
+	}
+
+	if result != ExampleData {
+		t.Errorf("result=%s exampleData=%s (different)", result, ExampleData)
+		return
+	}
+}
+
 //TestYAML runs tests for YAML func
 func TestYAML(t *testing.T) {
 	b, err := json.Marshal(ExampleData)
