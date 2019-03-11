@@ -1,6 +1,6 @@
 # Decode
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/snwfdhmp/decode)](https://goreportcard.com/report/github.com/snwfdhmp/decode) [![Documentation](https://godoc.org/github.com/snwfdhmp/decode?status.svg)](http://godoc.org/github.com/snwfdhmp/decode)
+[![Go Report Card](https://goreportcard.com/badge/github.com/snwfdhmp/decode)](https://goreportcard.com/report/github.com/snwfdhmp/decode) [![Documentation](https://godoc.org/github.com/snwfdhmp/decode?status.svg)](http://godoc.org/github.com/snwfdhmp/decode) [![cover.run](https://cover.run/go/github.com/snwfdhmp/decode.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Fsnwfdhmp%2Fdecode)
 
 ## Install
 
