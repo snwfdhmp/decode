@@ -1,25 +1,36 @@
 # Decode
 
-## Introduction
+[![Go Report Card](https://goreportcard.com/badge/github.com/snwfdhmp/decode)](https://goreportcard.com/report/github.com/snwfdhmp/decode) [![Documentation](https://godoc.org/github.com/snwfdhmp/decode?status.svg)](http://godoc.org/github.com/snwfdhmp/decode)
 
-## Table of Contents
+## Install
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Get started](#get-started)
-- [Contributors](#contributors)
+Install with `go get github.com/snwfdhmp/decode`.
 
-## Installation
+Import with
 
-You can install the package via
-
-```bash
-$ go get github.com/snwfdhmp/decode
+```golang
+import "github.com/snwfdhmp/decode"
 ```
 
-## Get started
+## Usage
 
-> Complete documentation can be found on [godoc](http://godoc.org/github.com/snwfdhmp/decode)
+Decode YAML
+
+```golang
+var data interface{}
+err := decode.YAML("config.yml", &data)
+```
+
+or decode JSON
+
+```golang
+var data interface{}
+err := decode.JSON("config.json", &data)
+```
+
+## Documentation
+
+Complete documentation can be found on [godoc](http://godoc.org/github.com/snwfdhmp/decode)
 
 ## Contributors
 
