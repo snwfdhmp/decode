@@ -3,40 +3,38 @@ package decode
 
 import (
 	"encoding/json"
+	"io"
+	"os"
 
-	// "path/filepath"
-
-	"github.com/spf13/afero"
-	yaml "gopkg.in/yaml.v2"
+	"github.com/go-yaml/yaml"
 )
 
-var (
-	fs = afero.NewOsFs()
-)
-
-// UnmarshalFunc represents an function used for Unmarshal-ing bytes into a struct
+// NewDecoderFunc represents an function used for Unmarshal-ing bytes into a struct
 // Example: json.Unmarshal from package encoding/json
-type UnmarshalFunc func([]byte, interface{}) error
+type NewDecoderFunc func(io.Reader) Decoder
 
-// Parse parses file located at 'path' using the given UnmarshalFunc, into given recipient
-// Any standard Marshal func of type :
-//     func (b []byte, data interface{}) error
-// can be used.
-func Parse(u UnmarshalFunc, path string, to interface{}) error {
-	content, err := afero.ReadFile(fs, path) //read file
-	if err != nil {
-		return err
-	}
-
-	return u(content, to)
+// Decoder represents an object implementing the Decode func
+type Decoder interface {
+	//Decode represents the functions used for decoding. See json.Decoder.Decode or yaml.Decoder.Decode
+	Decode(interface{}) error
 }
 
 //JSON calls Parse with encoding/json Unmarshal func
 func JSON(path string, to interface{}) error {
-	return Parse(json.Unmarshal, path, to)
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+
+	return json.NewDecoder(file).Decode(to)
 }
 
 //YAML calls Parse with gopkg.in/yaml.v2 Unmarshal func
 func YAML(path string, to interface{}) error {
-	return Parse(yaml.Unmarshal, path, to)
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+
+	return yaml.NewDecoder(file).Decode(to)
 }

@@ -23,6 +23,8 @@ var (
 	ExamplePathJSON = "test.json"
 	//ExamplePathYAML will hold path for test data file on YAML func
 	ExamplePathYAML = "test.yaml"
+
+	fs = afero.NewOsFs()
 )
 
 //TestJSON runs tests for JSON func
@@ -47,28 +49,18 @@ func TestJSON(t *testing.T) {
 		t.Errorf("result=%s exampleData=%s (different)", result, ExampleData)
 		return
 	}
-}
 
-//TestParse runs tests for Parse func
-func TestParse(t *testing.T) {
-	b, err := json.Marshal(ExampleData)
-	if err != nil {
-		t.Errorf("err: %s", err)
-		return
-	}
-	if err := afero.WriteFile(fs, ExamplePathJSON, b, 0755); err != nil {
-		t.Errorf("err: %s", err)
-		return
-	}
-
-	var result ExampleType
-	if err := Parse(json.Unmarshal, ExamplePathJSON, &result); err != nil {
-		t.Errorf("err: %s", err)
-		return
-	}
-
-	if result != ExampleData {
-		t.Errorf("result=%s exampleData=%s (different)", result, ExampleData)
+	fakePath := "/tmp/thisFileDoesNot_/Exists"
+	if err := JSON(fakePath, &result); err == nil {
+		exists, err := afero.Exists(fs, fakePath)
+		if err != nil {
+			t.Errorf("could not execute tests properly: could not check if fakePath exists (%s): %s", fakePath, err)
+			return
+		} else if exists {
+			t.Errorf("could not execute tests properly: the used fakePath is an existing file (%s)", fakePath)
+			return
+		}
+		t.Errorf("error not handled when file doesnt exist")
 		return
 	}
 }
@@ -93,6 +85,20 @@ func TestYAML(t *testing.T) {
 
 	if result != ExampleData {
 		t.Errorf("result=%s exampleData=%s (different)", result, ExampleData)
+		return
+	}
+
+	fakePath := "/tmp/thisFileDoesNot_/Exists"
+	if err := YAML(fakePath, &result); err == nil {
+		exists, err := afero.Exists(fs, fakePath)
+		if err != nil {
+			t.Errorf("could not execute tests properly: could not check if fakePath exists (%s): %s", fakePath, err)
+			return
+		} else if exists {
+			t.Errorf("could not execute tests properly: the used fakePath is an existing file (%s)", fakePath)
+			return
+		}
+		t.Errorf("error not handled when file doesnt exist")
 		return
 	}
 }
