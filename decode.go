@@ -25,6 +25,7 @@ func JSON(path string, to interface{}) error {
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
 	return json.NewDecoder(file).Decode(to)
 }
@@ -35,6 +36,7 @@ func YAML(path string, to interface{}) error {
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
 	return yaml.NewDecoder(file).Decode(to)
 }
