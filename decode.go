@@ -30,7 +30,7 @@ func JSON(path string, to interface{}) error {
 	return json.NewDecoder(file).Decode(to)
 }
 
-//YAML calls Parse with gopkg.in/yaml.v2 Unmarshal func
+//YAML calls Parse with github.com/go-yaml/yaml Unmarshal func
 func YAML(path string, to interface{}) error {
 	file, err := os.Open(path)
 	if err != nil {
